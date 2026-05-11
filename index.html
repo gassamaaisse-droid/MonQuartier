@@ -4,9 +4,310 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MonQuartier — Le réseau des associations</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'DM Sans',sans-serif;background:#f0faf5;color:#1a3a28;}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,.95);backdrop-filter:blur(20px);border-bottom:1px solid #c8e8d8;padding:15px 40px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 1px 12px rgba(22,168,90,.08);}
+.logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.3rem;color:#0f7a41;}.logo span{color:#16a85a;}
+.nav-links{display:flex;gap:24px;list-style:none;}
+.nav-links a{color:#4a8060;text-decoration:none;font-size:.86rem;font-weight:500;cursor:pointer;}
+.nav-links a:hover{color:#0f7a41;}
+.nav-btns{display:flex;gap:10px;}
+.btn-login{background:transparent;border:1px solid #a8d8be;color:#4a8060;padding:8px 18px;border-radius:7px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.83rem;}
+.btn-register{background:#16a85a;color:#fff;border:none;padding:8px 18px;border-radius:7px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.83rem;font-weight:700;}
+.btn-register:hover{background:#0f7a41;}
+
+/* HERO */
+.hero{padding:140px 40px 80px;text-align:center;background:linear-gradient(160deg,#f0fdf8,#dcfce7,#f0faf5);}
+.hero-badge{display:inline-flex;align-items:center;gap:7px;background:rgba(22,168,90,.1);border:1px solid rgba(22,168,90,.3);color:#0f7a41;padding:6px 16px;border-radius:100px;font-size:.75rem;font-weight:600;margin-bottom:24px;}
+.hero-badge span{width:7px;height:7px;background:#16a85a;border-radius:50%;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.4);opacity:.5;}}
+h1{font-family:'Syne',sans-serif;font-size:clamp(2.2rem,5vw,4.5rem);font-weight:800;line-height:1.06;letter-spacing:-2px;color:#0f7a41;margin-bottom:20px;}
+h1 em{font-style:italic;color:#16a85a;font-family:Georgia,serif;}
+.hero-sub{font-size:1.05rem;color:#4a8060;max-width:500px;margin:0 auto 36px;line-height:1.75;}
+.hero-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+.btn-primary{background:#16a85a;color:#fff;border:none;cursor:pointer;padding:14px 32px;border-radius:9px;font-family:'DM Sans',sans-serif;font-weight:700;font-size:.95rem;transition:all .2s;}
+.btn-primary:hover{background:#0f7a41;transform:translateY(-2px);box-shadow:0 10px 26px rgba(22,168,90,.3);}
+.btn-secondary{background:#fff;color:#1a3a28;border:1px solid #a8d8be;cursor:pointer;padding:14px 28px;border-radius:9px;font-family:'DM Sans',sans-serif;font-weight:500;font-size:.95rem;transition:all .2s;}
+.btn-secondary:hover{border-color:#16a85a;color:#0f7a41;}
+
+/* STATS */
+.stats{display:flex;justify-content:center;gap:52px;padding:36px 40px;background:#fff;border-top:1px solid #c8e8d8;border-bottom:1px solid #c8e8d8;flex-wrap:wrap;}
+.stat-num{font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;color:#0f7a41;}
+.stat-num span{color:#16a85a;}
+.stat-label{font-size:.75rem;color:#6b9e82;margin-top:3px;}
+
+/* CONTAINER */
+.container{max-width:1300px;margin:0 auto;padding:52px 40px;}
+.section-title{font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:700;color:#0f7a41;margin-bottom:24px;}
+
+/* SEARCH */
+.search-bar{display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap;}
+.search-input{flex:1;min-width:220px;background:#fff;border:1px solid #c8e8d8;color:#1a3a28;padding:13px 16px 13px 44px;border-radius:9px;font-family:'DM Sans',sans-serif;font-size:.9rem;}
+.search-input:focus{outline:none;border-color:#16a85a;}
+.search-wrap{flex:1;position:relative;}
+.search-wrap::before{content:'🔍';position:absolute;left:15px;top:50%;transform:translateY(-50%);}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px;}
+.chip{background:#fff;border:1px solid #c8e8d8;color:#6b9e82;padding:7px 15px;border-radius:100px;font-size:.75rem;font-weight:500;cursor:pointer;transition:all .2s;}
+.chip.active,.chip:hover{border-color:#16a85a;color:#0f7a41;background:rgba(22,168,90,.08);}
+
+/* CARDS */
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px;margin-bottom:52px;}
+.card{background:#fff;border:1px solid #c8e8d8;border-radius:14px;padding:22px;cursor:pointer;transition:all .25s;box-shadow:0 2px 8px rgba(22,168,90,.06);}
+.card:hover{border-color:rgba(22,168,90,.4);transform:translateY(-3px);box-shadow:0 12px 32px rgba(22,168,90,.12);}
+.card-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px;}
+.card-icon{width:46px;height:46px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;}
+.badge{font-size:.67rem;font-weight:700;padding:3px 9px;border-radius:100px;}
+.badge-local{background:rgba(249,115,22,.12);color:#c2410c;}
+.badge-national{background:rgba(99,102,241,.12);color:#4338ca;}
+.badge-intl{background:rgba(22,168,90,.12);color:#0f7a41;}
+.card-name{font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;color:#0f7a41;margin-bottom:5px;}
+.card-desc{font-size:.8rem;color:#6b9e82;line-height:1.6;margin-bottom:12px;}
+.card-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;}
+.tag{background:#d1fae5;color:#0f7a41;font-size:.7rem;padding:2px 9px;border-radius:5px;}
+.card-footer{display:flex;align-items:center;justify-content:space-between;border-top:1px solid #c8e8d8;padding-top:12px;}
+.card-stats{display:flex;gap:12px;}
+.card-stat{font-size:.72rem;color:#6b9e82;}
+.card-stat strong{color:#1a3a28;}
+.btn-sm{background:transparent;border:1px solid rgba(22,168,90,.4);color:#16a85a;padding:6px 14px;border-radius:7px;font-size:.75rem;font-weight:600;cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif;}
+.btn-sm:hover{background:rgba(22,168,90,.08);}
+
+/* CATEGORIES */
+.cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:14px;margin-bottom:52px;}
+.cat-card{background:#fff;border:1px solid #c8e8d8;border-radius:11px;padding:22px 16px;cursor:pointer;transition:all .2s;text-align:center;box-shadow:0 1px 4px rgba(22,168,90,.05);}
+.cat-card:hover{border-color:#16a85a;transform:translateY(-2px);}
+.cat-icon{font-size:1.9rem;margin-bottom:8px;}
+.cat-name{font-family:'Syne',sans-serif;font-size:.82rem;font-weight:700;color:#0f7a41;margin-bottom:2px;}
+.cat-count{font-size:.72rem;color:#6b9e82;}
+
+/* MODAL */
+.overlay{position:fixed;inset:0;background:rgba(15,122,65,.15);backdrop-filter:blur(8px);z-index:500;display:none;align-items:center;justify-content:center;padding:20px;}
+.overlay.open{display:flex;}
+.modal{background:#fff;border:1px solid #c8e8d8;border-radius:18px;padding:30px;width:100%;max-width:460px;box-shadow:0 20px 60px rgba(22,168,90,.12);}
+.modal-title{font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;color:#0f7a41;margin-bottom:5px;}
+.modal-sub{font-size:.85rem;color:#6b9e82;margin-bottom:24px;}
+.form-group{margin-bottom:15px;}
+.form-label{display:block;font-size:.75rem;font-weight:600;color:#6b9e82;margin-bottom:5px;text-transform:uppercase;letter-spacing:.3px;}
+.form-input{width:100%;background:#f0faf5;border:1px solid #c8e8d8;color:#1a3a28;padding:12px 15px;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:.9rem;}
+.form-input:focus{outline:none;border-color:#16a85a;}
+.btn-full{width:100%;padding:13px;font-size:.95rem;margin-top:6px;}
+.modal-close{float:right;background:none;border:none;font-size:1.2rem;cursor:pointer;color:#6b9e82;}
+.auth-switch{text-align:center;margin-top:14px;font-size:.82rem;color:#6b9e82;}
+.auth-switch a{color:#16a85a;cursor:pointer;font-weight:600;}
+
+/* TOAST */
+.toast{position:fixed;bottom:26px;right:26px;background:#fff;border:1px solid #16a85a;color:#0f7a41;padding:13px 20px;border-radius:9px;font-size:.84rem;z-index:999;display:none;box-shadow:0 8px 22px rgba(22,168,90,.15);}
+.toast.show{display:flex;align-items:center;gap:8px;}
+
+/* FOOTER */
+footer{background:#0f7a41;color:#fff;text-align:center;padding:40px;margin-top:60px;}
+footer .logo-foot{font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:800;margin-bottom:8px;}
+footer p{font-size:.85rem;opacity:.75;}
+
+@media(max-width:768px){
+  nav{padding:13px 18px;}
+  .nav-links{display:none;}
+  .hero{padding:110px 18px 60px;}
+  .container{padding:36px 18px;}
+  .stats{gap:28px;padding:28px 18px;}
+}
+</style>
 </head>
 <body>
-<h1>Bienvenue sur MonQuartier</h1>
-<p>Application en construction...</p>
+
+<nav>
+  <div class="logo">Mon<span>Quartier</span></div>
+  <ul class="nav-links">
+    <li><a onclick="scrollTo('#associations')">Associations</a></li>
+    <li><a onclick="scrollTo('#categories')">Catégories</a></li>
+    <li><a onclick="showToast('🗺️ Carte bientôt disponible !')">Carte</a></li>
+    <li><a onclick="showToast('💚 Dons bientôt disponibles !')">Faire un don</a></li>
+  </ul>
+  <div class="nav-btns">
+    <button class="btn-login" onclick="openModal('login')">Connexion</button>
+    <button class="btn-register" onclick="openModal('register')">S'inscrire</button>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-badge"><span></span>🌍 Le réseau des associations de votre quartier</div>
+  <h1>Connectez votre <em>quartier</em>,<br>amplifiez votre impact</h1>
+  <p class="hero-sub">MonQuartier réunit toutes les associations locales, nationales et internationales sur une seule plateforme pour favoriser les synergies.</p>
+  <div class="hero-btns">
+    <button class="btn-primary" onclick="scrollTo('#associations')">🔍 Explorer les associations</button>
+    <button class="btn-secondary" onclick="openModal('register')">Créer un compte →</button>
+  </div>
+</section>
+
+<div class="stats">
+  <div><div class="stat-num">12<span>k+</span></div><div class="stat-label">Associations référencées</div></div>
+  <div><div class="stat-num">87</div><div class="stat-label">Villes représentées</div></div>
+  <div><div class="stat-num">340<span>+</span></div><div class="stat-label">Collaborations actives</div></div>
+  <div><div class="stat-num">18</div><div class="stat-label">Tables de données</div></div>
+</div>
+
+<div class="container">
+
+  <div id="associations" style="scroll-margin-top:80px">
+    <div class="search-bar">
+      <div class="search-wrap">
+        <input class="search-input" type="text" placeholder="Nom, cause, ville…" oninput="filterCards(this.value)">
+      </div>
+      <button class="btn-primary" style="padding:13px 24px">Rechercher</button>
+    </div>
+    <div class="chips">
+      <div class="chip active" onclick="setChip(this,'all')">Toutes</div>
+      <div class="chip" onclick="setChip(this,'local')">🏙️ Locales</div>
+      <div class="chip" onclick="setChip(this,'national')">🇫🇷 Nationales</div>
+      <div class="chip" onclick="setChip(this,'intl')">🌍 Internationales</div>
+      <div class="chip" onclick="setChip(this,'environnement')">🌿 Environnement</div>
+      <div class="chip" onclick="setChip(this,'social')">🤝 Social</div>
+      <div class="chip" onclick="setChip(this,'sante')">🏥 Santé</div>
+    </div>
+    <div class="section-title">Associations <span id="count" style="font-weight:400;font-size:.9rem;color:#6b9e82"></span></div>
+    <div class="cards-grid" id="cards-grid"></div>
+  </div>
+
+  <div id="categories" style="scroll-margin-top:80px">
+    <div class="section-title">Domaines d'action</div>
+    <div class="cat-grid" id="cat-grid"></div>
+  </div>
+
+</div>
+
+<!-- LOGIN -->
+<div class="overlay" id="modal-login" onclick="closeOutside(event,'modal-login')">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('login')">✕</button>
+    <div class="modal-title">Bon retour 👋</div>
+    <div class="modal-sub">Connectez-vous à MonQuartier</div>
+    <div class="form-group"><label class="form-label">Email</label><input class="form-input" id="login-email" type="email" placeholder="vous@email.com"></div>
+    <div class="form-group"><label class="form-label">Mot de passe</label><input class="form-input" id="login-pwd" type="password" placeholder="••••••••"></div>
+    <button class="btn-primary btn-full" onclick="doLogin()">Se connecter →</button>
+    <p class="auth-switch">Pas de compte ? <a onclick="switchModal('login','register')">S'inscrire</a></p>
+  </div>
+</div>
+
+<!-- REGISTER -->
+<div class="overlay" id="modal-register" onclick="closeOutside(event,'modal-register')">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('register')">✕</button>
+    <div class="modal-title">Rejoignez-nous 🚀</div>
+    <div class="modal-sub">Créez votre compte MonQuartier</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div class="form-group"><label class="form-label">Prénom</label><input class="form-input" id="reg-prenom" type="text" placeholder="Marie"></div>
+      <div class="form-group"><label class="form-label">Nom</label><input class="form-input" id="reg-nom" type="text" placeholder="Dupont"></div>
+    </div>
+    <div class="form-group"><label class="form-label">Email</label><input class="form-input" id="reg-email" type="email" placeholder="vous@email.com"></div>
+    <div class="form-group"><label class="form-label">Mot de passe</label><input class="form-input" id="reg-pwd" type="password" placeholder="Minimum 6 caractères"></div>
+    <button class="btn-primary btn-full" onclick="doRegister()">Créer mon compte →</button>
+    <p class="auth-switch">Déjà un compte ? <a onclick="switchModal('register','login')">Se connecter</a></p>
+  </div>
+</div>
+
+<div class="toast" id="toast"><span id="toast-msg"></span></div>
+
+<footer>
+  <div class="logo-foot">MonQuartier</div>
+  <p>Le réseau des associations de France 🇫🇷</p>
+  <p style="margin-top:8px;font-size:.75rem">© 2026 MonQuartier — Tous droits réservés</p>
+</footer>
+
+<script>
+const ASSOCS = [
+  {id:0,name:"Greenpeace France",icon:"🌱",cat:"environnement",scale:"intl",color:"rgba(22,168,90,.15)",border:"#16a85a",desc:"Protection de l'environnement dans 55+ pays. Campagnes pour le climat et les océans.",tags:["Environnement","Climat","Océans"],members:"3.2M",projects:48},
+  {id:1,name:"Médecins Sans Frontières",icon:"🏥",cat:"sante",scale:"intl",color:"rgba(249,115,22,.12)",border:"#f97316",desc:"Organisation médicale humanitaire dans 70+ pays en zones de crise.",tags:["Santé","Humanitaire","Urgences"],members:"65k",projects:120},
+  {id:2,name:"Secours Populaire",icon:"🤝",cat:"social",scale:"national",color:"rgba(99,102,241,.12)",border:"#6366f1",desc:"Aide aux personnes en difficulté : alimentation, droits, vacances pour enfants.",tags:["Social","Solidarité","Alimentation"],members:"80k",projects:320},
+  {id:3,name:"WWF France",icon:"🐼",cat:"environnement",scale:"intl",color:"rgba(22,168,90,.12)",border:"#16a85a",desc:"Protection des espèces menacées et des écosystèmes naturels dans 100+ pays.",tags:["Faune","Climat","Forêts"],members:"5M",projects:90},
+  {id:4,name:"La Croix-Rouge",icon:"❤️",cat:"sante",scale:"national",color:"rgba(249,115,22,.12)",border:"#f97316",desc:"Secours d'urgence, formation aux premiers secours et insertion sociale.",tags:["Santé","Secours","Formation"],members:"1.1M",projects:200},
+  {id:5,name:"Emmaüs Connect",icon:"📱",cat:"social",scale:"national",color:"rgba(99,102,241,.1)",border:"#6366f1",desc:"Lutte contre la fracture numérique pour les personnes précaires.",tags:["Numérique","Inclusion","Social"],members:"12k",projects:45},
+  {id:6,name:"UNICEF France",icon:"👶",cat:"education",scale:"intl",color:"rgba(22,168,90,.12)",border:"#16a85a",desc:"Protection des droits des enfants dans 190 pays.",tags:["Enfants","Éducation","Droits"],members:"13k",projects:180},
+  {id:7,name:"Zéro Déchet Paris",icon:"♻️",cat:"environnement",scale:"local",color:"rgba(22,168,90,.1)",border:"#16a85a",desc:"Promotion du mode de vie zéro déchet dans les 20 arrondissements parisiens.",tags:["Déchets","Local","Écologie"],members:"8.5k",projects:30},
+  {id:8,name:"Les Restos du Cœur",icon:"🍽️",cat:"social",scale:"national",color:"rgba(249,115,22,.1)",border:"#f97316",desc:"170 millions de repas distribués chaque année depuis 1985.",tags:["Alimentation","Solidarité","Insertion"],members:"72k",projects:115}
+];
+
+const CATS = [
+  {icon:"🌿",name:"Environnement",count:"2 400",cat:"environnement"},
+  {icon:"🤝",name:"Social",count:"3 100",cat:"social"},
+  {icon:"📚",name:"Éducation",count:"1 800",cat:"education"},
+  {icon:"🏥",name:"Santé",count:"1 500",cat:"sante"},
+  {icon:"🎨",name:"Culture",count:"980",cat:"culture"},
+  {icon:"💻",name:"Numérique",count:"640",cat:"numerique"},
+  {icon:"🏋️",name:"Sport",count:"1 200",cat:"sport"},
+  {icon:"🔬",name:"Recherche",count:"420",cat:"recherche"}
+];
+
+let filterVal = 'all', searchVal = '';
+
+function init(){
+  renderCards();
+  renderCats();
+}
+
+function renderCards(){
+  let data = [...ASSOCS];
+  if(filterVal !== 'all') data = data.filter(a => a.scale === filterVal || a.cat === filterVal);
+  if(searchVal) data = data.filter(a => a.name.toLowerCase().includes(searchVal) || a.desc.toLowerCase().includes(searchVal));
+  document.getElementById('count').textContent = `(${data.length} résultats)`;
+  document.getElementById('cards-grid').innerHTML = data.map(a => `
+    <div class="card" onclick="showToast('📋 Fiche détaillée bientôt disponible !')">
+      <div class="card-top">
+        <div class="card-icon" style="background:${a.color};border:1px solid ${a.border}">${a.icon}</div>
+        <span class="badge badge-${a.scale}">${{local:'LOCAL',national:'NATIONAL',intl:'INTL'}[a.scale]}</span>
+      </div>
+      <div class="card-name">${a.name}</div>
+      <div class="card-desc">${a.desc}</div>
+      <div class="card-tags">${a.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+      <div class="card-footer">
+        <div class="card-stats">
+          <div class="card-stat">👥 <strong>${a.members}</strong></div>
+          <div class="card-stat">📂 <strong>${a.projects}</strong> projets</div>
+        </div>
+        <button class="btn-sm" onclick="event.stopPropagation();showToast('💚 Don bientôt disponible !')">Soutenir</button>
+      </div>
+    </div>`).join('');
+}
+
+function renderCats(){
+  document.getElementById('cat-grid').innerHTML = CATS.map(c => `
+    <div class="cat-card" onclick="setChipByCat('${c.cat}')">
+      <div class="cat-icon">${c.icon}</div>
+      <div class="cat-name">${c.name}</div>
+      <div class="cat-count">${c.count} associations</div>
+    </div>`).join('');
+}
+
+function filterCards(v){ searchVal = v.toLowerCase(); renderCards(); }
+function setChip(el, val){
+  document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  filterVal = val; renderCards();
+}
+function setChipByCat(cat){
+  filterVal = cat; renderCards();
+  document.querySelector('#associations').scrollIntoView({behavior:'smooth'});
+}
+function scrollTo(sel){ document.querySelector(sel).scrollIntoView({behavior:'smooth',block:'start'}); }
+
+function openModal(type){ document.getElementById('modal-'+type).classList.add('open'); }
+function closeModal(type){ document.getElementById('modal-'+type).classList.remove('open'); }
+function closeOutside(e,id){ if(e.target===document.getElementById(id)) closeModal(id.replace('modal-','')); }
+function switchModal(close,open){ closeModal(close); setTimeout(()=>openModal(open),150); }
+
+function doLogin(){ showToast('✅ Connexion bientôt connectée à Supabase !'); closeModal('login'); }
+function doRegister(){ showToast('🎉 Inscription bientôt connectée à Supabase !'); closeModal('register'); }
+
+let toastT;
+function showToast(msg){
+  const t = document.getElementById('toast');
+  document.getElementById('toast-msg').textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastT);
+  toastT = setTimeout(()=>t.classList.remove('show'), 3500);
+}
+
+window.addEventListener('DOMContentLoaded', init);
+</script>
 </body>
 </html>
